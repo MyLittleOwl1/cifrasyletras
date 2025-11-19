@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Letras y Cifras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Letras y Cifras</h1>
+    <div class="subtitle">Conversión web del script de Tkinter con validaciones y resultados con desplazamiento.</div>
+
+    <div class="grid">
+      <section class="card" aria-labelledby="letras-title">
+        <h2 id="letras-title">Letras</h2>
+        <div class="row">
+          <label for="diccionario">Diccionario (.txt, una palabra por línea)</label>
+          <input id="diccionario" type="file" accept=".txt" />
+        </div>
+        <div class="row">
+          <label for="letras">Introduce una relación de letras</label>
+          <input id="letras" type="text" maxlength="10" placeholder="[e.g. abcdefghij]" />
+
+        </div>
+        <div class="row">
+          <label for="tam">Introduce el tamaño mínimo de la palabra</label>
+          <input id="tam" type="text" inputmode="numeric" placeholder="3" />
+        </div>
+        <div class="row">
+          <button id="buscarLetras" class="btn btn-accent">Buscar palabras</button>
+          <button id="borrarLetras" class="btn btn-secondary">Borrar letras</button>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="cifras-title">
+        <h2 id="cifras-title">Cifras</h2>
+        <div class="row hint">Introduce 6 números</div>
+        <div class="inputs-inline">
+          <input id="n1" type="number" inputmode="numeric" placeholder="0" />
+          <input id="n2" type="number" inputmode="numeric" placeholder="0" />
+          <input id="n3" type="number" inputmode="numeric" placeholder="0" />
+          <input id="n4" type="number" inputmode="numeric" placeholder="0" />
+          <input id="n5" type="number" inputmode="numeric" placeholder="0" />
+          <input id="n6" type="number" inputmode="numeric" placeholder="0" />
+        </div>
+        <div class="row">
+          <label for="objetivo">Introduce el número objetivo (100–999)</label>
+          <input id="objetivo" type="number" inputmode="numeric" placeholder="100–999" />
+        </div>
+        <div class="row">
+          <button id="buscarCifras" class="btn btn-accent">Buscar expresión</button>
+          <button id="borrarCifras" class="btn btn-secondary">Borrar cifras</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" aria-labelledby="res-title" style="margin-top:20px;">
+      <h2 id="res-title">Resultados</h2>
+      <div id="resultados" class="results" aria-live="polite"></div>
+      <div class="footer-actions">
+        <button id="borrarResultados" class="btn btn-danger">Borrar resultados</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
