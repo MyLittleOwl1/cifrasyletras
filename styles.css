@@ -1,118 +1,139 @@
-:root {
-      --bg: #0f172a;
-      --panel: #111827;
-      --muted: #9ca3af;
-      --text: #e5e7eb;
-      --accent: #38bdf8;
-      --accent-2: #a78bfa;
-      --danger: #f43f5e;
-      --ok: #22c55e;
-      --border: #1f2937;
-    }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 10% 10%, #0b1220 0%, var(--bg) 60%), linear-gradient(180deg, #0f172a 0%, #0b1020 100%);
-      color: var(--text);
-    }
-    .container {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 16px;
-    }
-    h1 {
-      font-size: 28px;
-      margin: 0 0 16px;
-      letter-spacing: 0.3px;
-    }
-    .subtitle {
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-    @media (min-width: 900px) {
-      .grid { grid-template-columns: 1fr 1fr; }
-    }
-    .card {
-      background: linear-gradient(180deg, #0b1220 0%, var(--panel) 100%);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
-    .card h2 {
-      font-size: 18px;
-      margin: 0 0 12px;
-    }
-    .row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    label {
-      font-size: 13px;
-      color: var(--muted);
-      min-width: 180px;
-    }
-    input[type="text"], input[type="number"] {
-      background: #0b1220;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      outline: none;
-      width: 100%;
-    }
-    input[type="file"] {
-      color: var(--muted);
-    }
-    .inputs-inline {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 8px;
-      width: 100%;
-    }
-    .btn {
-      appearance: none;
-      border: 1px solid var(--border);
-      background: linear-gradient(180deg, #111827 0%, #0b1220 100%);
-      color: var(--text);
-      padding: 10px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.04s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-      font-weight: 600;
-    }
-    .btn:hover { border-color: #2b3648; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .btn:active { transform: translateY(1px); }
-    .btn-accent { border-color: #1d4ed8; background: linear-gradient(180deg, #1f2937 0%, #0b1220 100%); color: #c7d2fe; }
-    .btn-danger { border-color: #4b1f27; color: #fecdd3; }
-    .btn-secondary { color: #cbd5e1; }
-    .results {
-      margin-top: 20px;
-      background: linear-gradient(180deg, #0b1220 0%, #0a0f1c 100%);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px;
-      height: 260px;
-      overflow: auto;
-      white-space: pre-wrap;
-      line-height: 1.35;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-    }
-    .footer-actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .hint { color: var(--muted); font-size: 12px; }
-    .ok { color: var(--ok); }
+/* ===== Mejoras para móvil y legibilidad ===== */
+:root{
+  --gap: 12px;
+  --radius: 10px;
+  --accent: #0a84ff;
+  --bg: #fff;
+  --text: #111;
+}
+
+/* Base más legible y fluida */
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-size: clamp(15px, 3.2vw, 18px);
+  line-height: 1.4;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  margin: 0;
+  padding: 0;
+}
+
+.container{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: clamp(12px, 4vw, 28px);
+  box-sizing: border-box;
+}
+
+/* Titulares escalables */
+h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); margin: 0 0 6px; }
+.subtitle { font-size: 0.95rem; color: #555; margin-bottom: 10px; }
+
+/* Grid responsive: 2 columnas en escritorio, 1 en móvil */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--gap);
+  align-items: start;
+}
+
+/* Tarjetas */
+.card {
+  background: #f9f9fb;
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+}
+
+/* Filas y etiquetas con mayor contraste y espacio */
+.row { margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; }
+.row label { font-weight: 600; font-size: 0.95rem; }
+
+/* Inputs táctiles y adaptables */
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #d6d6d6;
+  background: #fff;
+  outline: none;
+}
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(10,132,255,0.08);
+}
+
+/* Inputs en línea: permiten envoltura y ancho flexible en móvil */
+.inputs-inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.inputs-inline input {
+  width: 48px;
+  padding: 0.6rem 0.6rem;
+  text-align: center;
+  min-width: 48px;
+}
+
+/* Botones grandes y táctiles */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  min-height: 44px;
+  font-size: 1rem;
+}
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-secondary { background: #e7e7ea; color: #111; }
+.btn-danger { background: #ff3b30; color: #fff; }
+
+/* Resultados: preservar saltos de línea y permitir scroll en móvil */
+.results {
+  background: #fff;
+  border: 1px solid #e3e3e6;
+  border-radius: 8px;
+  padding: 12px;
+  white-space: pre-wrap;
+  overflow: auto;
+  max-height: 40vh;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+  font-size: 0.97rem;
+}
+
+/* Acciones de pie: en fila en escritorio, apilar en móvil */
+.footer-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+
+/* Pistas y textos pequeños */
+.hint { color: #666; font-size: 0.95rem; margin-bottom: 6px; }
+
+/* ===== Media queries para teléfonos (anchura pequeña) ===== */
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+  .inputs-inline { gap: 8px; flex-wrap: wrap; }
+  .inputs-inline input { flex: 1 1 30%; min-width: 60px; width: auto; }
+  .row { gap: 8px; }
+  .footer-actions { flex-direction: column; align-items: stretch; }
+  .footer-actions .btn { width: 100%; }
+  .card { padding: 12px; }
+  .btn { min-height: 50px; border-radius: 12px; }
+  .results { max-height: 45vh; font-size: 0.98rem; }
+}
+
+/* Pequeñas mejoras para inputs numéricos en móviles */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
