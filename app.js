@@ -12,11 +12,11 @@ function appendResult(text) {
   resultados.textContent += text;
 }
 
-// ===== Carga de diccionario (archivo .txt, una palabra por línea) =====
+// ===== Carga automática de diccionario =====
 let diccionario = null;
 
-// Intento de cargar diccionario desde servidor (archivo en la misma carpeta pública)
-(async function loadServerDictionary() {
+// Cargar diccionario automáticamente desde el servidor al iniciar
+async function cargarDiccionario() {
   try {
     const resp = await fetch("./diccionario_español_sintilde.txt");
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -24,36 +24,20 @@ let diccionario = null;
     diccionario = new Set(
       text.split(/\r?\n/).map((l) => l.trim().toLowerCase()).filter(Boolean)
     );
-    setResult(`Diccionario cargado desde servidor: ${diccionario.size} palabras.`, "ok");
+    setResult(`Diccionario cargado automáticamente: ${diccionario.size} palabras.`, "ok");
   } catch (err) {
-    // No es crítico: el usuario aún puede cargarlo manualmente con el input file.
-    console.warn("No se pudo cargar el diccionario desde servidor:", err);
+    diccionario = null;
+    setResult(`No se pudo cargar el diccionario automáticamente. ${err}`, "err");
+    // El usuario puede seguir usando la parte de cifras, aunque la de letras requerirá el diccionario.
   }
-})();
+}
+cargarDiccionario();
 
-$("#diccionario").addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if (!file) { setResult("Error: No se seleccionó archivo de diccionario.", "err"); return; }
-  try {
-    const text = await file.text();
-    // Normalizar: quitar tildes si el archivo no las tiene o viene ya sin tildes.
-    // El script original espera 'diccionario_español_sintilde.txt'
-    diccionario = new Set(
-      text.split(/\r?\n/).map((l) => l.trim().toLowerCase()).filter(Boolean)
-    );
-    setResult(`Diccionario cargado: ${diccionario.size} palabras.`, "ok");
-  } catch (err) {
-    setResult(`Error al leer diccionario: ${err}`, "err");
-  }
-});
-
-// ===== Letras (Scrabble) =====
+// ===== LETRAS (Scrabble) =====
 // formar_palabras: todas las permutaciones de longitud 1..n
 function formarPalabras(letras) {
   const res = new Set();
   const arr = letras.split("");
-  // Generar permutaciones para longitudes 1..n
-  // Backtracking iterativo con uso de 'used' para combinaciones ordenadas
   const n = arr.length;
   const used = Array(n).fill(false);
   const path = [];
@@ -82,7 +66,6 @@ function buscarPalabras(palabrasSet, tamMin, dic) {
   for (const p of palabrasSet) {
     if (dic.has(p) && p.length >= tamMin) out.push(p);
   }
-  // Orden por longitud y alfabético
   out.sort((a, b) => (a.length - b.length) || a.localeCompare(b));
   return out;
 }
@@ -96,11 +79,9 @@ $("#letras").addEventListener("input", (e) => {
   }
 });
 
-
 $("#buscarLetras").addEventListener("click", () => {
   let letras = ($("#letras").value || "").toLowerCase().trim();
 
-  // Nuevo: límite de 10 caracteres
   if (letras.length > 10) {
     $("#letras").value = letras.slice(0, 10);
     setResult("Error: Máximo 10 letras permitidas. Se ha recortado la entrada a 10.", "err");
@@ -122,7 +103,7 @@ $("#buscarLetras").addEventListener("click", () => {
     return;
   }
 
-  if (!diccionario) { setResult("Error: Carga primero el diccionario (.txt).", "err"); return; }
+  if (!diccionario) { setResult("Error: El diccionario no está cargado. Intenta recargar la página.", "err"); return; }
 
   const tam = parseInt(tamStr, 10);
   const generadas = formarPalabras(letras);
@@ -135,7 +116,6 @@ $("#buscarLetras").addEventListener("click", () => {
     setResult(listado);
   }
 });
-
 
 $("#borrarLetras").addEventListener("click", () => {
   $("#letras").value = "";
@@ -157,8 +137,7 @@ function applyOps(perm, ops) {
     const next = perm[i];
 
     if (op === "/") {
-      if (next === 0) return { expr: null, value: null }; // división por cero
-      // evitar resultados decimales en cualquier paso
+      if (next === 0) return { expr: null, value: null };
       if (value % next !== 0) return { expr: null, value: null };
       value = Math.trunc(value / next);
       expr = `(${expr} / ${next})`;
@@ -176,7 +155,6 @@ function applyOps(perm, ops) {
   return { expr, value };
 }
 
-// Generar combinaciones de tamaño r del array
 function combinations(arr, r) {
   const res = [];
   const n = arr.length;
@@ -201,7 +179,6 @@ function combinations(arr, r) {
   return res;
 }
 
-// Permutaciones de un array
 function permutations(arr) {
   const res = [];
   const a = arr.slice();
@@ -222,9 +199,7 @@ function permutations(arr) {
   return res;
 }
 
-// Producto cartesiano de operaciones
 function opsProduct(k) {
-  // devuelve array de arrays con longitud k sobre OPS
   const res = [];
   const cur = Array(k);
   function backtrack(pos) {
