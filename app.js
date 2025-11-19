@@ -18,7 +18,7 @@ let diccionario = null;
 // Intento de cargar diccionario desde servidor (archivo en la misma carpeta pública)
 (async function loadServerDictionary() {
   try {
-    const resp = await fetch("./diccionario_español_sintildes.txt");
+    const resp = await fetch("./diccionario_español_sintilde.txt");
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
     diccionario = new Set(
