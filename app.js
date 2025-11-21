@@ -18,7 +18,7 @@ let diccionario = null;
 // Cargar diccionario automáticamente desde el servidor al iniciar
 async function cargarDiccionario() {
   try {
-    const resp = await fetch("./diccionario_español_sintilde.txt");
+    const resp = await fetch("./diccionario_español_sintilde_conjugaciones.txt");
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const text = await resp.text();
     diccionario = new Set(
